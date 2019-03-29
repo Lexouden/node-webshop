@@ -11,7 +11,7 @@ var logger = require('morgan');
 
 // Some globally accessible vars
 global.config = require('./config/config');
-global.mongoose = require('mongoose');
+module.exports.db = mongoose = require('mongoose');
 
 
 // 
@@ -44,6 +44,7 @@ app.use(function (req, res, next) {
 /**
  * Create database connection
  */
+require('./app/database');
 mongoose.connect(`mongodb://${config.database.host}/${config.database.database}`, {useNewUrlParser: true})
 
 
