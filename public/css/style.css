@@ -6,4 +6,9 @@ body {
   color: #fff;
 }
 
+li {
+  color: #fff;
+  background: #303030;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Roboto');

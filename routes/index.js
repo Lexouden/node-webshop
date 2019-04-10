@@ -8,4 +8,4 @@ app.post('/auth', passport.authenticate('local', {
   failureFlash: true
 }));
 
-app.get('/')
+app.get('/login')

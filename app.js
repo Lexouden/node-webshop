@@ -7,17 +7,15 @@ var http = require('http');
 var cookieParser = require('cookie-parser');
 var path = require('path');
 var logger = require('morgan');
+const WebSocket = require('ws');
 
 
 // Some globally accessible vars
 global.config = require('./config/config');
 module.exports.db = mongoose = require('mongoose');
 
-
-// 
+// Require auth controller
 require('./app/auth');
-require('./app/socket');
-
 
 var app = express();
 
@@ -45,11 +43,13 @@ app.use(function (req, res, next) {
  * Create database connection
  */
 require('./app/database');
-mongoose.connect(`mongodb://${config.database.host}/${config.database.database}`, {useNewUrlParser: true})
+mongoose.connect(`mongodb://${config.database.host}/${config.database.database}`, {
+  useNewUrlParser: true
+})
 
 
 /**
- * Create server connection
+ * Create server
  */
 
 var port = normalizePort(process.env.PORT || config.server.port);
@@ -58,13 +58,28 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
+ * Make websocket connection
+ */
+const wss = new WebSocket.Server({
+  server,
+  path: '/socket'
+});
+
+wss.on('connection', (ws) => {
+  ws.on('connected', () => {
+    console.log('A user connected')
+  });
+});
+
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-// global.io = require('socket.io')(server);
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -95,9 +110,9 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -119,10 +134,5 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  console.log(`Listening on ${port}`)
 }
-
-module.exports = app;

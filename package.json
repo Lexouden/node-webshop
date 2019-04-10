@@ -22,12 +22,17 @@
     "express": "^4.16.4",
     "http": "0.0.0",
     "http-errors": "^1.7.2",
+    "lit-element": "^2.1.0",
+    "lit-html": "^1.0.0",
     "mongoose": "^5.4.20",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10",
     "passport": "^0.4.0",
     "path": "^0.12.7",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0"
+    "socket.io-client": "^2.2.0",
+    "ws": "^6.2.1"
+  },
+  "devDependencies": {
+    "workbox-build": "^4.2.0"
   }
 }
