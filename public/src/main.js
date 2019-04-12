@@ -2,10 +2,33 @@ import {
   html,
   render
 } from 'lit-html';
+import './components/cart.js';
 import {
-  Cart
-} from './components/cart.js';
+  Product
+} from './components/product.js';
 
+
+render(Product([{
+    product_name: `Test`,
+    product_description: 'Test product for the webshop',
+    price: '20,00'
+  },
+  {
+    product_name: `Test`,
+    product_description: 'Test product for the webshop',
+    price: '20,00'
+  },
+  {
+    product_name: `Test`,
+    product_description: 'Test product for the webshop',
+    price: '20,00'
+  },
+  {
+    product_name: `Test`,
+    product_description: 'Test product for the webshop',
+    price: '20,00'
+  }
+]), document.getElementById('products'));
 
 var ws = new WebSocket('ws://localhost:3000/socket');
 

@@ -1,14 +1,1 @@
-body {
-  margin: 0;
-  padding: 50px;
-  background: #303030;
-  font: 15px 'Roboto', sans-serif;
-  color: #fff;
-}
-
-li {
-  color: #fff;
-  background: #303030;
-}
-
 @import url('https://fonts.googleapis.com/css?family=Roboto');
