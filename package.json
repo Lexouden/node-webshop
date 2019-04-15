@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Lexouden/node-webshop#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "http": "0.0.0",
