@@ -30,6 +30,21 @@ function renderProducts() {
   ]), document.getElementById('products'));
 }
 
+function addToShopCart() {
+  sessionStorage.setItem('cart', JSON.stringify([{
+    item: '',
+    amount: 1,
+    price: 1
+  }]))
+
+  var data = JSON.parse(sessionStorage.getItem('cart'));
+  console.log(data)
+}
+
+if (location === `http://${location.hostname}:8081`) location = `http://${location.hostname}:8081/shop`;
+
+
+window.addToShopCart = addToShopCart;
 window.renderProducts = renderProducts
 
 var ws = new WebSocket('ws://localhost:3000/socket');
