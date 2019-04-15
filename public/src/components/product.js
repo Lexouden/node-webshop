@@ -14,7 +14,7 @@ function loadList(items) {
       <div class="product">
         <h2 class="header">${item.product_name}</h2>
         <p class="description">${item.product_description}</p>
-        <p class="price">€${item.price}</p> 
+        <p class="price">$${item.price}</p> 
         <div class="btn" onclick="addToCart(this)" data-price="${item.price}" data-title="${item.product_name}">Add to cart</div> 
         <div class="quickview" onclick="quickView(this)" data-description="${item.product_description}" data-price="${item.price}" data-title="${item.product_name}">Quickview</div> 
       </div>

@@ -1,37 +1,20 @@
 import {
-  html,
-  render
+  html
 } from 'lit-html';
-import {
-  LitElement,
-  css
-} from 'lit-element';
 
 const itemTemplates = [];
 
-/**
- * *Create custom element
- */
-export class Cart extends LitElement {
-  render(data) {
-    return cartItem(data);
-  }
-}
-
-customElements.define('cart-element', Cart)
-
-const cartItem = (data) => html `
+export const Cart = (data) => html `
 <h1 class="${data.titleClass}">${data.items.length} ${getItemAmount(data.items.length)} in cart.</h1>
 <ul class="cartlist list-group list-group-flush">
   <li class="list-group-item list-group-item-dark">Item <span class="float-right">Price</span><span class="float-right mr-5">Amount</span></li>
   ${loadList(data.items)}
   <li class="list-group-item list-group-item-dark"> 
     <hr>
-    <span class="float-right">Subtotal without Tax: €${priceTotalWithoutTax(data.items)}</span><br>
-    <span class="float-right">Subtotal with Tax: €${priceTotalTax(data.items)}</span>
+    <span class="float-right">No Tax: €${totalWithoutTax(data.items)}</span><br>
+    <span class="float-right">With Tax: €${totalWithTax(data.items)}</span>
   </li>
   <li class="list-group-item list-group-item-dark">
-    
 </ul>
 `;
 
@@ -53,7 +36,7 @@ function loadList(items) {
   return html `${itemTemplates}`;
 }
 
-function priceTotalTax(items) {
+function totalWithTax(items) {
   let total = 0;
 
   for (let i of items) {
@@ -63,7 +46,7 @@ function priceTotalTax(items) {
   return total;
 }
 
-function priceTotalWithoutTax(items) {
+function totalWithoutTax(items) {
   let total = 0;
 
   for (let i of items) {

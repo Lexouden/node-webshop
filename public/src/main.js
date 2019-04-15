@@ -1,5 +1,4 @@
 import {
-  html,
   render
 } from 'lit-html';
 import './components/cart.js';
@@ -7,28 +6,31 @@ import {
   Product
 } from './components/product.js';
 
+function renderProducts() {
+  render(Product([{
+      product_name: `Test`,
+      product_description: 'Test product for the webshop',
+      price: Number(20.00).toFixed(2)
+    },
+    {
+      product_name: `Test`,
+      product_description: 'Test product for the webshop',
+      price: Number(20.00).toFixed(2)
+    },
+    {
+      product_name: `Test`,
+      product_description: 'Test product for the webshop',
+      price: Number(20.00).toFixed(2)
+    },
+    {
+      product_name: `Test`,
+      product_description: 'Test product for the webshop',
+      price: Number(20.00).toFixed(2)
+    }
+  ]), document.getElementById('products'));
+}
 
-render(Product([{
-    product_name: `Test`,
-    product_description: 'Test product for the webshop',
-    price: '20,00'
-  },
-  {
-    product_name: `Test`,
-    product_description: 'Test product for the webshop',
-    price: '20,00'
-  },
-  {
-    product_name: `Test`,
-    product_description: 'Test product for the webshop',
-    price: '20,00'
-  },
-  {
-    product_name: `Test`,
-    product_description: 'Test product for the webshop',
-    price: '20,00'
-  }
-]), document.getElementById('products'));
+window.renderProducts = renderProducts
 
 var ws = new WebSocket('ws://localhost:3000/socket');
 

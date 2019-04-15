@@ -45,14 +45,14 @@ function addToCart(btn) {
     productName = btn.dataset.title,
     miniCartNames = $('.products'),
     names = $('.names'),
-    price = btn.dataset.price,
+    price = Number(btn.dataset.price).toFixed(2),
     priceInt = parseInt(price);
 
   totalPrice.push(priceInt);
-  miniCartPrice = totalPrice.reduce(function (a, b) {
+  miniCartPrice = Number(totalPrice.reduce(function (a, b) {
     return a + b
-  });
-  $('.miniprice').text('Total amount: ' + miniCartPrice + ",-");
+  })).toFixed(2);
+  $('.miniprice').text('Total amount: $' + miniCartPrice);
   minicart.push(productName);
   lastProduct = minicart[minicart.length - 1];
   miniCartNames.text('Your cart lines: ');

@@ -6,7 +6,7 @@ module.exports = {
   database: {
     host: 'localhost',
     port: 27017,
-    database: 'webshop',
+    database: 'webshop_store',
     login: {
       username: '',
       password: ''
