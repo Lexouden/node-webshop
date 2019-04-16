@@ -1,10 +1,13 @@
 import {
   render
-} from 'lit-html';
+} from '../node_modules/lit-html/lit-html.js';
 import './components/cart.js';
 import {
   Product
 } from './components/product.js';
+import {
+  Category
+} from './components/category.js';
 
 function renderProducts() {
   render(Product([{
@@ -30,6 +33,32 @@ function renderProducts() {
   ]), document.getElementById('products'));
 }
 
+function renderCategories() {
+  render(Category(
+    [{
+        category_id: 1,
+        category_name: 'Category 1',
+      },
+      {
+        category_id: 2,
+        category_name: 'Category 2',
+      },
+      {
+        category_id: 3,
+        category_name: 'Category 3',
+      },
+      {
+        category_id: 4,
+        category_name: 'Category 4',
+      },
+      {
+        category_id: 5,
+        category_name: 'Category 5',
+      }
+    ]
+  ), document.getElementById('categories'));
+}
+
 function addToShopCart() {
   sessionStorage.setItem('cart', JSON.stringify([{
     item: '',
@@ -41,11 +70,9 @@ function addToShopCart() {
   console.log(data)
 }
 
-if (location === `http://${location.hostname}:8081`) location = `http://${location.hostname}:8081/shop`;
-
-
 window.addToShopCart = addToShopCart;
-window.renderProducts = renderProducts
+window.renderProducts = renderProducts;
+window.renderCategories = renderCategories;
 
 var ws = new WebSocket('ws://localhost:3000/socket');
 

@@ -1,3 +1,4 @@
 import {
   html
-} from "lit-html";
+}
+from "../../node_modules/lit-html/lit-html.jsl";
