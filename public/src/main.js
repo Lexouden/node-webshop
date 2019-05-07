@@ -1,6 +1,6 @@
 import {
   render
-} from '../node_modules/lit-html/lit-html.js';
+} from 'lit-html';
 import './components/cart.js';
 import {
   Product
