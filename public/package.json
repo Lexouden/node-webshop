@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-dropdown-menu": "^3.0.1",
     "@polymer/paper-input": "^3.0.2",
     "@polymer/paper-material": "^3.0.1",
     "lit-element": "^2.1.0",

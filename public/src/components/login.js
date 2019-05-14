@@ -18,19 +18,19 @@ class LoginElement extends LitElement {
         margin: 0 auto;
       }
 
-      .blue {
+      .white {
         background-color: white;
       }
 
-      .login-input {
-        color: white;
+      paper-input.login-input {
+        --paper-input-container-input-color: white  ;
       }
     `
   }
 
   render() {
     return html `
-      <paper-material elevation="1">
+      <paper-material elevation="2">
         <div>
           <paper-input class="login-input" id="username" placeholder="Username"></paper-input>
         </div>
@@ -40,12 +40,9 @@ class LoginElement extends LitElement {
         </div>
 
         <div>
-          <paper-button raised class="blue">Login</paper-button>
+          <paper-button raised class="white" @click="${this.handleClick}">Login</paper-button>
         </div>
-
       </paper-material>
-        
-
     `
   }
 }

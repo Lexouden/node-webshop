@@ -8,6 +8,7 @@ import {
 import {
   Category
 } from './components/category.js';
+import './modules/socket.js'
 
 function renderProducts() {
   render(Product([{
@@ -73,8 +74,6 @@ function addToShopCart() {
 window.addToShopCart = addToShopCart;
 window.renderProducts = renderProducts;
 window.renderCategories = renderCategories;
-
-var ws = new WebSocket('ws://localhost:3000/socket');
 
 // Check for service worker
 if ('serviceWorker' in navigator) {
