@@ -6,6 +6,9 @@ import {
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-material/paper-material.js';
 import '@polymer/paper-button/paper-button.js';
+import {
+  login
+} from '../modules/socket.js';
 
 
 class LoginElement extends LitElement {
@@ -28,19 +31,25 @@ class LoginElement extends LitElement {
     `
   }
 
+  handleClick() {
+    var username = 'Dummy username';
+    var password = 'dummypassword';
+    return login(username, password)
+  }
+
   render() {
     return html `
       <paper-material elevation="2">
         <div>
-          <paper-input class="login-input" id="username" placeholder="Username"></paper-input>
+          <paper-input class="login-input" id="username" name="username" placeholder="Username" auto-validate></paper-input>
         </div>
         
         <div>
-          <paper-input class="login-input" id="password" type="password" placeholder="Password"></paper-input>
+          <paper-input class="login-input" id="password" name="password" type="password" placeholder="Password" auto-validate></paper-input>
         </div>
 
         <div>
-          <paper-button raised class="white" @click="${this.handleClick}">Login</paper-button>
+          <paper-button raised type="submit" class="white" @click="${this.handleClick}">Login</paper-button>
         </div>
       </paper-material>
     `

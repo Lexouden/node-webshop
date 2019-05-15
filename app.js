@@ -7,8 +7,6 @@ var http = require('http');
 var cookieParser = require('cookie-parser');
 var path = require('path');
 var logger = require('morgan');
-const WebSocket = require('ws');
-
 
 // Some globally accessible vars
 global.config = require('./config/config');
@@ -47,11 +45,9 @@ mongoose.connect(`mongodb://${config.database.host}/${config.database.database}`
   useNewUrlParser: true
 })
 
-
 /**
  * Create server
  */
-
 var port = normalizePort(process.env.PORT || config.server.port);
 app.set('port', port);
 
@@ -60,17 +56,22 @@ var server = http.createServer(app);
 /**
  * Make websocket connection
  */
-const wss = new WebSocket.Server({
-  server,
-  path: '/socket'
-});
+var io = require('socket.io')(server);
+module.exports.io = io;
 
-wss.on('connection', (ws) => {
-  ws.on('connected', () => {
-    console.log('A user connected')
+io.on('connection', (socket) => {
+  console.log('A user connected')
+  socket.on('disconnect', () => {
+    console.log('A user disconnected')
   });
 });
 
+/**
+ * Require all controllers
+ */
+require('./app/controllers/UserController');
+require('./app/controllers/CategoryController');
+require('./app/controllers/ProductController');
 
 /**
  * Listen on provided port, on all network interfaces.
