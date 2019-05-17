@@ -56,8 +56,7 @@ var server = http.createServer(app);
 /**
  * Make websocket connection
  */
-var io = require('socket.io')(server);
-module.exports.io = io;
+module.exports.io = io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
   console.log('A user connected')

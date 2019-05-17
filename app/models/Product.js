@@ -4,10 +4,15 @@ const ObjectId = Schema.ObjectId;
 
 // Product Model
 var ProductSchema = new Schema({
-  product_id: ObjectId,
-  product_name: String,
-  product_description: String,
+  id: ObjectId,
+  name: String,
+  description: String,
+  category: String,
   SearchName: String,
+  stock: {
+    type: Number,
+    default: 1
+  },
   price: {
     type: Number,
     default: 0
@@ -15,6 +20,10 @@ var ProductSchema = new Schema({
   created_at: {
     type: Date,
     default: Date.now
+  },
+  reviews: {
+    type: Object,
+    default: null
   }
 });
 

@@ -12,7 +12,7 @@ import {
 
 
 class LoginElement extends LitElement {
-  static get styles() {
+  static get styles() { // Element css styling
     return css `
       :host {
         display: block;
@@ -31,13 +31,13 @@ class LoginElement extends LitElement {
     `
   }
 
-  handleClick() {
+  handleClick() { // Handle the submit click
     var username = 'Dummy username';
     var password = 'dummypassword';
     return login(username, password)
   }
 
-  render() {
+  render() { // Render login form
     return html `
       <paper-material elevation="2">
         <div>

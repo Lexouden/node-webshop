@@ -7,6 +7,8 @@ const ObjectId = Schema.ObjectId;
 // User Model
 var UserSchema = new Schema({
   user_id: ObjectId,
+  firstName: String,
+  lastName: String,
   username: {
     type: String,
     required: true,
@@ -18,8 +20,7 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
-  firstName: String,
-  lastName: String
+  permissions: Object
 });
 
 UserSchema.pre('save', (next) => {
