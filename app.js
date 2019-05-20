@@ -41,9 +41,6 @@ app.use(function (req, res, next) {
  * Create database connection
  */
 require('./app/database');
-mongoose.connect(`mongodb://${config.database.host}/${config.database.database}`, {
-  useNewUrlParser: true
-})
 
 /**
  * Create server
@@ -71,6 +68,7 @@ io.on('connection', (socket) => {
 require('./app/controllers/UserController');
 require('./app/controllers/CategoryController');
 require('./app/controllers/ProductController');
+require('./app/controllers/SocketController');
 
 /**
  * Listen on provided port, on all network interfaces.
