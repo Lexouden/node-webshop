@@ -31,10 +31,21 @@ class LoginElement extends LitElement {
     `
   }
 
+  static get properties() {
+    return {
+      value: String
+    };
+  }
+
   handleClick() { // Handle the submit click
-    var username = 'Dummy username';
-    var password = 'dummypassword';
-    return login(username, password)
+    var username = 'Backoffice';
+    var password = 'B@ck0ff1ce';
+    return login({
+      username,
+      password
+    }, (callback) => {
+      if (callback) toastr.success('Logged in succesfully', 'Success');
+    })
   }
 
   render() { // Render login form
