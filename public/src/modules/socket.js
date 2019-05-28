@@ -1,8 +1,17 @@
 var socket = io('http://localhost:3000');
-export async function login(user, pass) {
+export async function login({
+  username,
+  password
+}, callback) {
   socket.emit('login', {
-    user: user,
-    pass: pass
+    user: username,
+    pass: password
   });
-  console.log('Sending login data')
+
+  socket.on('logincb', ({
+    user,
+    cb
+  }) => {
+    callback(user, cb);
+  });
 }

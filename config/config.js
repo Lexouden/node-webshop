@@ -11,5 +11,7 @@ module.exports = {
       username: '',
       password: ''
     }
-  }
+  },
+  SAUsername: 'Backoffice',
+  SAPassword: 'B@ck0ff1c3'
 }

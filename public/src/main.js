@@ -8,7 +8,7 @@ import {
 import {
   Category
 } from './components/category.js';
-import './modules/socket.js'
+import './modules/socket.js';
 
 function renderProducts() {
   render(Product([{

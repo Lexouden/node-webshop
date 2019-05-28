@@ -39,18 +39,25 @@ class LoginElement extends LitElement {
 
   handleClick() { // Handle the submit click
     var username = 'Backoffice';
-    var password = 'B@ck0ff1ce';
+    var password = 'B@ck0ff1c3';
     return login({
-      username,
-      password
-    }, (callback) => {
-      if (callback) toastr.success('Logged in succesfully', 'Success');
-    })
+      username: username,
+      password: password
+    }, (user, callback) => {
+      if (user === null && callback === false) {
+        console.error('User does not exist.', 'Login failed!')
+        // toastr.warning('User does not exist.', 'Login failed!');
+      }
+      if (callback === true) {
+        console.info('Logged in succesfully')
+        // toastr.success('Logged in succesfully', 'Success');
+      }
+    });
   }
 
   render() { // Render login form
     return html `
-      <paper-material elevation="2">
+      <paper-material elevation="3">
         <div>
           <paper-input class="login-input" id="username" name="username" placeholder="Username" auto-validate></paper-input>
         </div>

@@ -23,7 +23,7 @@ var UserSchema = new Schema({
   permissions: Object
 });
 
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function (next) {
   var user = this;
 
   // Only hash password if new or modified
