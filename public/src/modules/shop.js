@@ -47,6 +47,7 @@ function addToCart(btn) {
     names = $('.names'),
     price = Number(btn.dataset.price).toFixed(2),
     priceInt = parseInt(price);
+  var cart = JSON.parse(sessionStorage.getItem('cart'));
 
   totalPrice.push(priceInt);
   miniCartPrice = Number(totalPrice.reduce(function (a, b) {
@@ -54,6 +55,31 @@ function addToCart(btn) {
   })).toFixed(2);
   $('.miniprice').text('Total amount: $' + miniCartPrice);
   minicart.push(productName);
+
+  if (cart) {
+    var checkcart = cart.find(cart => cart.name === productName);
+
+    if (checkcart) {
+      checkcart.amount += 1
+    } else {
+      cart.push({
+        name: productName,
+        amount: 1,
+        price: price
+      });
+    }
+  } else {
+    cart = [];
+
+    cart.push({
+      name: productName,
+      amount: 1,
+      price: price
+    });
+  }
+
+  sessionStorage.setItem('cart', JSON.stringify(cart));
+
   lastProduct = minicart[minicart.length - 1];
   miniCartNames.text('Your cart lines: ');
   names.append('<p>' + lastProduct + '</p>');

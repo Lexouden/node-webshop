@@ -8,7 +8,7 @@ import {
 import {
   Category
 } from './components/category.js';
-import './modules/socket.js';
+import './modules/socket.js'
 
 function renderProducts() {
   render(Product([{
@@ -58,17 +58,6 @@ function renderCategories() {
       }
     ]
   ), document.getElementById('categories'));
-}
-
-function addToShopCart() {
-  sessionStorage.setItem('cart', JSON.stringify([{
-    item: '',
-    amount: 1,
-    price: 1
-  }]))
-
-  var data = JSON.parse(sessionStorage.getItem('cart'));
-  console.log(data)
 }
 
 window.addToShopCart = addToShopCart;

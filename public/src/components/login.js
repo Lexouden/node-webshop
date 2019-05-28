@@ -49,7 +49,8 @@ class LoginElement extends LitElement {
         // toastr.warning('User does not exist.', 'Login failed!');
       }
       if (callback === true) {
-        console.info('Logged in succesfully')
+        console.info('Logged in successfully');
+        sessionStorage.setItem('user', JSON.stringify(user));
         // toastr.success('Logged in succesfully', 'Success');
       }
     });
