@@ -12,6 +12,18 @@ export async function login({
     user,
     cb
   }) => {
-    callback(user, cb);
+    return callback(user, cb);
+  });
+}
+
+export async function products({
+  category
+}, callback) {
+  socket.emit('products', {
+    category: category
+  });
+
+  socket.on('productscb', (products) => {
+    return callback(products);
   });
 }

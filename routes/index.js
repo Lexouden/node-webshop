@@ -10,6 +10,6 @@ app.post('/auth', passport.authenticate('local', {
 
 app.get('/login')
 
-app.get('/', () => {
+app.get('*', () => {
   console.log('Back end routing called')
 })

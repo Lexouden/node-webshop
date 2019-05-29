@@ -5,16 +5,16 @@ var cartCount = 0,
   quickview = $('.quickviewContainer'),
   quickViewBtn = $('.quickview'),
   close = $('.quickviewContainer .close'),
-  minicart = [],
-  totalPrice = [],
   miniCartPrice;
 
 buy.on('click', addToCart);
 quickViewBtn.on('click', quickView);
-cart.on('click', showMiniCart);
+
 close.on('click', function () {
   quickview.removeClass('active');
 });
+
+updateCartCount();
 
 function quickView(btn) {
   var description = btn.dataset.description,
@@ -36,25 +36,13 @@ function quickView(btn) {
   quickViewDescription.text(description);
 }
 
-function showMiniCart() {
-  $('.mini').toggleClass('visible');
-}
-
 function addToCart(btn) {
   var self = $(this),
     productName = btn.dataset.title,
     miniCartNames = $('.products'),
     names = $('.names'),
     price = Number(btn.dataset.price).toFixed(2),
-    priceInt = parseInt(price);
-  var cart = JSON.parse(sessionStorage.getItem('cart'));
-
-  totalPrice.push(priceInt);
-  miniCartPrice = Number(totalPrice.reduce(function (a, b) {
-    return a + b
-  })).toFixed(2);
-  $('.miniprice').text('Total amount: $' + miniCartPrice);
-  minicart.push(productName);
+    cart = JSON.parse(sessionStorage.getItem('cart'));
 
   if (cart) {
     var checkcart = cart.find(cart => cart.name === productName);
@@ -80,11 +68,23 @@ function addToCart(btn) {
 
   sessionStorage.setItem('cart', JSON.stringify(cart));
 
-  lastProduct = minicart[minicart.length - 1];
-  miniCartNames.text('Your cart lines: ');
-  names.append('<p>' + lastProduct + '</p>');
+  updateCartCount();
 
-  cartCount++;
+  btn.classList.add('ok');
+  var timeOk = setTimeout(function () {
+    btn.classList.remove('ok');
+  }, 1000);
+}
+
+function updateCartCount() {
+  let cart = JSON.parse(sessionStorage.getItem('cart'));
+  if (cart) {
+    cart.forEach(item => {
+      cartCount = 0;
+      cartCount += item.amount
+    });
+  }
+
   span.text(cartCount);
   clearTimeout(time);
   if (span.hasClass('update')) {
@@ -97,12 +97,4 @@ function addToCart(btn) {
   } else {
     span.addClass('update');
   }
-  if (cartCount == 1) {
-    cart.toggleClass('icon-basket icon-basket-loaded');
-  }
-
-  btn.classList.add('ok');
-  var timeOk = setTimeout(function () {
-    btn.classList.remove('ok');
-  }, 1000);
 }

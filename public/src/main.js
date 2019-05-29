@@ -1,66 +1,48 @@
 import {
   render
 } from 'lit-html';
-import './components/cart.js';
+import {
+  Cart
+} from './components/cart.js';
 import {
   Product
 } from './components/product.js';
 import {
   Category
 } from './components/category.js';
-import './modules/socket.js'
+import './modules/socket.js';
+import {
+  products
+} from './modules/socket.js';
 
-function renderProducts() {
-  render(Product([{
-      product_name: `Test`,
-      product_description: 'Test product for the webshop',
-      price: Number(20.00).toFixed(2)
-    },
-    {
-      product_name: `Test`,
-      product_description: 'Test product for the webshop',
-      price: Number(20.00).toFixed(2)
-    },
-    {
-      product_name: `Test`,
-      product_description: 'Test product for the webshop',
-      price: Number(20.00).toFixed(2)
-    },
-    {
-      product_name: `Test`,
-      product_description: 'Test product for the webshop',
-      price: Number(20.00).toFixed(2)
-    }
-  ]), document.getElementById('products'));
+var cart = $('.cart');
+cart.on('click', renderCart);
+
+renderProducts()
+
+function renderProducts(category) {
+  products({
+    category
+  }, (products) => {
+    render(Product(products), document.getElementById('products'));
+  });
 }
 
 function renderCategories() {
-  render(Category(
-    [{
-        category_id: 1,
-        category_name: 'Category 1',
-      },
-      {
-        category_id: 2,
-        category_name: 'Category 2',
-      },
-      {
-        category_id: 3,
-        category_name: 'Category 3',
-      },
-      {
-        category_id: 4,
-        category_name: 'Category 4',
-      },
-      {
-        category_id: 5,
-        category_name: 'Category 5',
-      }
-    ]
-  ), document.getElementById('categories'));
+  render(Category(), document.getElementById('categories'));
 }
 
-window.addToShopCart = addToShopCart;
+function renderCart() {
+  var container_content = document.getElementById('cartcontainer').innerHTML;
+  if (container_content !== "") {
+    render(Cart(), document.getElementById('cartcontainer'));
+    $('#shopcart').modal('toggle');
+  } else {
+    render(Cart(), document.getElementById('cartcontainer'));
+    $('#shopcart').modal('toggle');
+  }
+}
+
 window.renderProducts = renderProducts;
 window.renderCategories = renderCategories;
 
