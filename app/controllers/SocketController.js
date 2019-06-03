@@ -5,6 +5,10 @@ const UserController = require('./UserController');
 const CategoryController = require('./CategoryController');
 
 io.on('connection', (socket) => {
+
+  /**
+   * Handle Login API / Socket call
+   */
   socket.on('login', ({
     user,
     pass
@@ -17,7 +21,17 @@ io.on('connection', (socket) => {
       socket.emit('logincb', {
         user: user,
         cb: callback
-      })
-    })
+      });
+    });
   });
+
+  /**
+   * Handle Product API / Socket call
+   */
+  socket.on('products', (category) => {
+    ProductController.getProducts(category, (products) => {
+      if (!products || products === null) return socket.emit('productscb', null);
+      if (products) return socket.emit('productscb', products);
+    })
+  })
 });
