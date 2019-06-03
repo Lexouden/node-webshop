@@ -34,8 +34,13 @@ export const Cart = () => html `
 
 function loadList() {
   cart = JSON.parse(sessionStorage.getItem('cart'));
-  for (const item of cart) {
-    itemTemplates.push(html `<li class="list-group-item">${item.name} <span class="float-right">€${Number(item.price*item.amount).toFixed(2)}</span><span class="float-right mr-5"><button class="btn btn-danger fa fa-minus" data-title="${item.name}" onclick="$removeFromCart"></button> <input value="${item.amount}" style="text-align: center" size="1" onchange="updateCart(this)"> <button class="btn btn-success fa fa-plus" data-title="${item.name}" onclick="addToCart(this)"></button></span></li>`);
+
+  if (cart) {
+    for (let item of cart) {
+      itemTemplates.push(html `<li class="list-group-item">${item.name} <span class="float-right">€${Number(item.price*item.amount).toFixed(2)}</span><span class="float-right mr-5"><button class="btn btn-danger fa fa-minus" data-title="${item.name}" onclick="$removeFromCart"></button> <input value="${item.amount}" style="text-align: center" size="1" onchange="updateCart(this)"> <button class="btn btn-success fa fa-plus" data-title="${item.name}" onclick="addToCart(this)"></button></span></li>`);
+    }
+  } else {
+    itemTemplates.push(html `<li class="list-group-item">No items in cart <span class="float-right">---</span><span class="float-right mr-5"><input value="-" style="text-align: center" size="1" disabled></span></li>`)
   }
 
   return html `${itemTemplates}`;
@@ -44,8 +49,10 @@ function loadList() {
 function totalWithTax() {
   let total = 0;
 
-  for (let i of cart) {
-    if (i !== null) total += i.price * i.amount;
+  if (cart) {
+    for (let i of cart) {
+      if (i !== null) total += i.price * i.amount;
+    }
   }
 
   return total;
@@ -54,10 +61,13 @@ function totalWithTax() {
 function totalWithoutTax() {
   let total = 0;
 
-  for (let i of cart) {
-    let price = i.price * i.amount - (i.price / 100 * 21);
-    if (i !== null) total += price;
+  if (cart) {
+    for (let i of cart) {
+      let price = i.price * i.amount - (i.price / 100 * 21);
+      if (i !== null) total += price;
+    }
   }
+
 
   return total;
 }
@@ -65,8 +75,10 @@ function totalWithoutTax() {
 function totalItems() {
   let total = 0;
 
-  for (let item of cart) {
-    if (item !== 0) total += item.amount;
+  if (cart) {
+    for (let item of cart) {
+      if (item !== 0) total += item.amount;
+    }
   }
 
   return total

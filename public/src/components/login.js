@@ -51,7 +51,7 @@ class LoginElement extends LitElement {
       if (callback === true) {
         console.info('Logged in successfully');
         sessionStorage.setItem('user', JSON.stringify(user));
-        // toastr.success('Logged in succesfully', 'Success');
+        // toastr.success('Logged in successfully', 'Success');
       }
     });
   }
