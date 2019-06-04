@@ -20,7 +20,8 @@ var UserSchema = new Schema({
     type: String,
     required: true
   },
-  permissions: Object
+  permissions: Object,
+  orders: Array
 });
 
 UserSchema.pre('save', function (next) {
