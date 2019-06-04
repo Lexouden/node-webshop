@@ -33,13 +33,15 @@ class LoginElement extends LitElement {
 
   static get properties() {
     return {
-      value: String
+      username: String,
+      password: String
     };
   }
 
   handleClick() { // Handle the submit click
-    var username = 'Backoffice';
-    var password = 'B@ck0ff1c3';
+    let username = document.querySelector("login-element").shadowRoot.querySelector("#username").shadowRoot.querySelector("#input-1 > input").value;
+    let password = document.querySelector("login-element").shadowRoot.querySelector("#password").shadowRoot.querySelector("#input-2 > input[type=password]").value;
+
     return login({
       username: username,
       password: password
@@ -58,13 +60,13 @@ class LoginElement extends LitElement {
 
   render() { // Render login form
     return html `
-      <paper-material elevation="3">
+      <paper-material slot="dropdown-content" elevation="3">
         <div>
-          <paper-input class="login-input" id="username" name="username" placeholder="Username" auto-validate></paper-input>
+          <paper-input class="login-input" id="username" name="username" placeholder="Username" @value="{{username}}" auto-validate></paper-input>
         </div>
         
         <div>
-          <paper-input class="login-input" id="password" name="password" type="password" placeholder="Password" auto-validate></paper-input>
+          <paper-input class="login-input" id="password" name="password" type="password" placeholder="Password" @value="${this.password}" auto-validate></paper-input>
         </div>
 
         <div>
@@ -73,6 +75,10 @@ class LoginElement extends LitElement {
       </paper-material>
     `
   }
+}
+
+function getElementByXpath(path) {
+  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
 customElements.define('login-element', LoginElement);
