@@ -1,6 +1,6 @@
 const Category = require("../models/Category");
 
-exports.getCategories = (data, callback) => {
+exports.getCategories = async (callback) => {
   Category.find({}, (err, categories) => {
     if (err) {
       // Error handle
@@ -11,7 +11,7 @@ exports.getCategories = (data, callback) => {
       return callback(null, false);
     }
 
-    return callback(categories);
+    return callback(categories, true);
   });
 };
 
