@@ -52,7 +52,7 @@ class LoginElement extends LitElement {
       }
       if (callback === true) {
         console.info('Logged in successfully');
-        sessionStorage.setItem('user', JSON.stringify(user));
+        setCookie('login', JSON.stringify(user), 5);
         // toastr.success('Logged in successfully', 'Success');
       }
     });
@@ -77,8 +77,11 @@ class LoginElement extends LitElement {
   }
 }
 
-function getElementByXpath(path) {
-  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 customElements.define('login-element', LoginElement);

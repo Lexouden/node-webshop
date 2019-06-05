@@ -17,6 +17,9 @@ exports.login = ({
       if (callback === true) return console.log(`User '${user.username}' logged in successfully`);
     });
     delete user.password;
+    delete user.permissions;
+    delete user.orders;
+
     callback(user, true);
   });
 }

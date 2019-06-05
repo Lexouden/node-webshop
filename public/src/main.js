@@ -43,7 +43,6 @@ function renderCart() {
   }
 }
 
-window.renderProducts = renderProducts;
 window.renderCategories = renderCategories;
 
 // Check for service worker
