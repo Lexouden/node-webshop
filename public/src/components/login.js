@@ -39,8 +39,8 @@ class LoginElement extends LitElement {
   }
 
   handleClick() { // Handle the submit click
-    let username = document.querySelector("login-element").shadowRoot.querySelector("#username").shadowRoot.querySelector("#input-1 > input").value;
-    let password = document.querySelector("login-element").shadowRoot.querySelector("#password").shadowRoot.querySelector("#input-2 > input[type=password]").value;
+    let username = this.shadowRoot.getElementById('username').value;
+    let password = this.shadowRoot.getElementById('password').value;
 
     return login({
       username: username,
