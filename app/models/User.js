@@ -1,5 +1,5 @@
-var mongoose = require('../../app.js').db,
-  bcrypt = require('bcrypt'),
+var mongoose = require("../../app.js").db,
+  bcrypt = require("bcrypt"),
   SALT_WORK_FACTOR = 10;
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
@@ -9,6 +9,13 @@ var UserSchema = new Schema({
   user_id: ObjectId,
   firstName: String,
   lastName: String,
+  email: {
+    type: String,
+    required: true,
+    index: {
+      unique: true
+    }
+  },
   username: {
     type: String,
     required: true,
@@ -21,14 +28,18 @@ var UserSchema = new Schema({
     required: true
   },
   permissions: Object,
-  orders: Array
+  orders: Array,
+  created_at: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre("save", function(next) {
   var user = this;
 
   // Only hash password if new or modified
-  if (!user.isModified('password')) return next();
+  if (!user.isModified("password")) return next();
 
   // Generate salt
   bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
@@ -45,11 +56,11 @@ UserSchema.pre('save', function (next) {
   });
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
     if (err) return cb(err);
     cb(null, isMatch);
   });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);
