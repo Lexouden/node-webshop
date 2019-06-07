@@ -1,7 +1,7 @@
 const UserController = require("./controllers/UserController");
 const ProductController = require("./controllers/ProductController");
 const CategoryController = require("./controllers/CategoryController");
-const faker = require('faker');
+const faker = require("faker");
 
 /**
  * Seed product table with Products
@@ -11,7 +11,8 @@ exports.seedProducts = async () => {
     randomPrice,
     randomQuantity,
     randomCategory,
-    categories = new Array
+    randomDescription,
+    categories = new Array();
 
   await CategoryController.getCategories((data, callback) => {
     if (!callback) return;
@@ -21,9 +22,16 @@ exports.seedProducts = async () => {
       categories.push(category.category_name);
     });
 
-    for (let i = 0; i <= 150; i++) {
-      randomProduct(categories);
-    }
+    ProductController.getProducts({}, data => {
+      if (data === undefined || data.length == 0) {
+        for (let i = 0; i <= 150; i++) {
+          randomProduct(categories);
+          if (i === 150) {
+            console.log("Products seeded in database!");
+          }
+        }
+      }
+    });
   });
 
   function randomProduct(categories) {
@@ -31,25 +39,33 @@ exports.seedProducts = async () => {
     randomPrice = faker.commerce.price(2, 100, 2);
     randomQuantity = faker.random.number(9999);
     randomCategory = faker.random.arrayElement(categories);
+    randomDescription = faker.lorem.sentence();
 
-    console.log(randomProductName, randomPrice, randomQuantity, randomCategory)
+    ProductController.newProduct({
+      name: randomProductName,
+      description: randomDescription,
+      category: randomCategory,
+      stock: randomQuantity,
+      price: randomPrice
+    });
   }
-
-
-}
+};
 
 exports.seedCategories = () => {
-  var categories = ['Category 1', 'Category 2', 'Category 3', 'Category 4'];
-  categories.forEach(category => {
-    CategoryController.getCategories((data, callback) => {
-      if (!callback) return console.log(data);
-      if (!data) {
+  var categories = ["Category 1", "Category 2", "Category 3", "Category 4"];
+
+  CategoryController.getCategories((data, callback) => {
+    if (!callback) return console.log(data);
+    if (data === undefined || data.length == 0) {
+      console.log("Seeding database");
+      categories.forEach(category => {
+        console.log(`Inserting ${category}`);
         CategoryController.newCategory({
           name: category
         });
-      }
-    });
+      });
+    }
   });
-}
+};
 
 exports.seedUsers = () => {};
