@@ -12,7 +12,7 @@ function loadList(items) {
       <div class="product">
         <h2 class="header">${item.name}</h2>
         <p class="description">${item.description}</p>
-        <p class="price">$${item.price}</p>
+        <p class="price">€${item.price}</p>
         <div
           class="btn"
           onclick="addToCart(this)"

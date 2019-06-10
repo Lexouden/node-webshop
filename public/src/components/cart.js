@@ -5,19 +5,51 @@ var cart = JSON.parse(sessionStorage.getItem("cart"));
 
 class CartElement extends LitElement {
   static get styles() {
-    css;
+    return css`
+      :host {
+      }
+
+      .float-right {
+        float: right;
+      }
+
+      .list-group-item {
+      }
+
+      .cartlist {
+        list-style-type: none;
+      }
+
+      .list-group {
+      }
+
+      .list-group-flush {
+      }
+
+      .btn {
+        content: "x";
+      }
+
+      #amount-title {
+        margin-right: 100px;
+      }
+
+      #amount {
+        margin-right: 65px;
+      }
+    `;
   }
   render() {
     return html`
       <ul class="cartlist list-group list-group-flush">
         <li class="list-group-item">
           Item <span class="float-right">Price</span
-          ><span class="float-right mr-5">Amount</span>
+          ><span class="float-right" id="amount-title">Amount</span>
         </li>
         ${loadList()}
         <li class="list-group-item">
           <hr />
-          <span class="float-right">Total</span><br />
+          <span class="float-right" id="total-title">Total</span><br />
           <span class="float-right"
             >No VAT: €${Number(totalWithoutTax()).toFixed(2)}</span
           ><br />
@@ -44,7 +76,7 @@ export const Cart = () => html`
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="cart">Cart</h5>
+          <h5 class="modal-title" id="cart-title">Cart</h5>
           <button
             type="button"
             class="close"
@@ -73,7 +105,7 @@ function loadList() {
             ${item.name}
             <span class="float-right"
               >€${Number(item.price * item.amount).toFixed(2)}</span
-            ><span class="float-right mr-5"
+            ><span class="float-right" id="amount"
               ><button
                 class="btn btn-danger fa fa-minus"
                 data-title="${item.name}"
