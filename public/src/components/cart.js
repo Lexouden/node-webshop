@@ -1,9 +1,9 @@
 import { LitElement, css, html } from "lit-element";
 
-const itemTemplates = [];
+var itemTemplates = [];
 var cart = JSON.parse(sessionStorage.getItem("cart"));
 
-class CartElement extends LitElement {
+export class CartElement extends LitElement {
   static get styles() {
     return css`
       :host {
@@ -24,10 +24,6 @@ class CartElement extends LitElement {
       }
 
       .list-group-flush {
-      }
-
-      .btn {
-        content: "x";
       }
 
       #amount-title {
@@ -86,9 +82,7 @@ export const Cart = () => html`
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <cart-element></cart-element>
-        </div>
+        <div class="modal-body" id="cart-modal"></div>
       </div>
     </div>
   </div>
@@ -96,32 +90,46 @@ export const Cart = () => html`
 
 function loadList() {
   cart = JSON.parse(sessionStorage.getItem("cart"));
-
-  if (cart) {
+  itemTemplates = [];
+  if (cart && cart.length !== 0) {
     for (let item of cart) {
       itemTemplates.push(
         html`
           <li class="list-group-item">
             ${item.name}
-            <span class="float-right"
-              >€${Number(item.price * item.amount).toFixed(2)}</span
-            ><span class="float-right" id="amount"
-              ><button
+            <span class="float-right">
+              €${Number(item.price * item.amount).toFixed(2)}
+            </span>
+            <span class="float-right" id="amount">
+              <button
                 class="btn btn-danger fa fa-minus"
                 data-title="${item.name}"
-                onclick="$removeFromCart"
-              ></button>
+                onclick="removeFromCart(this)"
+              >
+                -
+              </button>
               <input
                 value="${item.amount}"
+                data-title="${item.name}"
                 style="text-align: center"
                 size="1"
-                onchange="updateCart(this)"/>
+                onchange="updateCart(this)"
+              />
               <button
                 class="btn btn-success fa fa-plus"
                 data-title="${item.name}"
                 onclick="addToCart(this)"
-              ></button
-            ></span>
+              >
+                +
+              </button>
+              <button
+                class="btn"
+                data-title="${item.name}"
+                onclick="removeFromCart(this, 'remove')"
+              >
+                x
+              </button>
+            </span>
           </li>
         `
       );
@@ -130,10 +138,7 @@ function loadList() {
     itemTemplates.push(
       html`
         <li class="list-group-item">
-          No items in cart <span class="float-right">---</span
-          ><span class="float-right mr-5"
-            ><input value="-" style="text-align: center" size="1" disabled
-          /></span>
+          No items in cart
         </li>
       `
     );

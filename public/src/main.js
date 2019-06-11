@@ -2,7 +2,8 @@ import {
   render
 } from 'lit-html';
 import {
-  Cart
+  Cart,
+  CartElement
 } from './components/cart.js';
 import {
   Product
@@ -35,10 +36,18 @@ function renderCategories() {
 function renderCart() {
   var container_content = document.getElementById('cartcontainer').innerHTML;
   if (container_content !== "") {
+    let cartlist = $('cart-element > ul');
+    let cartelement = $('cart-element');
+    if (cartlist) {
+      cartlist.remove();
+      cartelement.remove();
+      $('#cart-modal').append("<cart-element></cart-element>")
+    }
     render(Cart(), document.getElementById('cartcontainer'));
     $('#shopcart').modal('toggle');
   } else {
     render(Cart(), document.getElementById('cartcontainer'));
+    $('#cart-modal').append("<cart-element></cart-element>")
     $('#shopcart').modal('toggle');
   }
 }
