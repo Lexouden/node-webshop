@@ -1,8 +1,10 @@
 const User = require("../models/User");
 
-exports.login = ({ user, pass }, callback) => {
-  User.findOne(
-    {
+exports.login = ({
+  user,
+  pass
+}, callback) => {
+  User.findOne({
       username: user
     },
     (err, user) => {
@@ -51,7 +53,12 @@ exports.newUser = (data, callback) => {
   });
 };
 
-exports.editUser = () => {};
+exports.editUser = (id, update, callback) => {
+  User.findByIdAndUpdate(id, update, err => {
+    if (err) return console.error(`An error occurred while updating a User: \n${err}`);
+    return callback(true);
+  });
+};
 
 exports.deleteUser = (data, callback) => {
   User.findByIdAndDelete(data, err => {
@@ -59,12 +66,12 @@ exports.deleteUser = (data, callback) => {
       return console.error(
         `An error occurred while trying to delete a User: \n${err}`
       );
+    return callback(true)
   });
 };
 
 exports.registerSA = data => {
-  User.findOne(
-    {
+  User.findOne({
       username: data.username
     },
     (err, user) => {
