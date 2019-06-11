@@ -1,64 +1,57 @@
-import {
-  render
-} from 'lit-html';
-import {
-  Cart,
-  CartElement
-} from './components/cart.js';
-import {
-  Product
-} from './components/product.js';
-import {
-  Category
-} from './components/category.js';
-import './modules/socket.js';
-import {
-  products
-} from './modules/socket.js';
+import { render } from "lit-html";
+import { Cart } from "./components/cart.js";
+import { Product } from "./components/product.js";
+import { Category } from "./components/category.js";
+import "./modules/socket.js";
+import { products, categories } from "./modules/socket.js";
 
-var cart = $('.cart');
-cart.on('click', renderCart);
+var cart = $(".cart");
+cart.on("click", renderCart);
 
-renderProducts()
+renderProducts();
+renderCategories();
 
 function renderProducts(category) {
-  products({
-    category
-  }, (products) => {
-    render(Product(products), document.getElementById('products'));
-  });
+  products(
+    {
+      category
+    },
+    products => {
+      render(Product(products), document.getElementById("products"));
+    }
+  );
 }
 
 function renderCategories() {
-  render(Category(), document.getElementById('categories'));
+  categories(categories => {
+    render(Category(categories), document.getElementById("categories"));
+  });
 }
 
 function renderCart() {
-  var container_content = document.getElementById('cartcontainer').innerHTML;
+  var container_content = document.getElementById("cartcontainer").innerHTML;
   if (container_content !== "") {
-    let cartlist = $('cart-element > ul');
-    let cartelement = $('cart-element');
+    let cartlist = $("cart-element > ul");
+    let cartelement = $("cart-element");
     if (cartlist) {
       cartlist.remove();
       cartelement.remove();
-      $('#cart-modal').append("<cart-element></cart-element>")
+      $("#cart-modal").append("<cart-element></cart-element>");
     }
-    render(Cart(), document.getElementById('cartcontainer'));
-    $('#shopcart').modal('toggle');
+    render(Cart(), document.getElementById("cartcontainer"));
+    $("#shopcart").modal("toggle");
   } else {
-    render(Cart(), document.getElementById('cartcontainer'));
-    $('#cart-modal').append("<cart-element></cart-element>")
-    $('#shopcart').modal('toggle');
+    render(Cart(), document.getElementById("cartcontainer"));
+    $("#cart-modal").append("<cart-element></cart-element>");
+    $("#shopcart").modal("toggle");
   }
 }
 
-window.renderCategories = renderCategories;
-
 // Check for service worker
-if ('serviceWorker' in navigator) {
+if ("serviceWorker" in navigator) {
   // Use the window load event to keep the page load performant
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js');
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js");
   });
 }
 
@@ -69,6 +62,18 @@ export async function uuid() {
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return (
+    s4() +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    s4() +
+    s4()
+  );
 }
