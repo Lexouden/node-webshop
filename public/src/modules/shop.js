@@ -79,9 +79,9 @@ function addToCart(btn) {
 function updateCartCount() {
   let cart = JSON.parse(sessionStorage.getItem('cart'));
   if (cart) {
+    cartCount = 0;
     cart.forEach(item => {
-      cartCount = 0;
-      cartCount += item.amount
+      cartCount += item.amount;
     });
   }
 
