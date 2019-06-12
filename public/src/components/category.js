@@ -9,7 +9,11 @@ export const Category = data => html`
 function loadList(items) {
   for (const item of items) {
     itemTemplates.push(html`
-      <button class="btn btn-primary d-inline pr-4" data-category="${item._id}">
+      <button
+        class="btn btn-primary d-inline pr-4"
+        data-category="${item._id}"
+        onclick="gotoCategory(this)"
+      >
         ${item.category_name}
       </button>
     `);
