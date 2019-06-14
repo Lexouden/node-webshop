@@ -2,24 +2,23 @@ import { render } from "lit-html";
 import { Cart } from "./components/cart.js";
 import { Product } from "./components/product.js";
 import { Category } from "./components/category.js";
+import { Checkout } from "./components/checkout.js";
 import "./modules/socket.js";
-import { products, categories } from "./modules/socket.js";
+import { products, categories, checkout } from "./modules/socket.js";
 
 var cart = $(".cart");
+var checkoutbtn = $("#checkoutbtn");
 cart.on("click", renderCart);
+checkoutbtn.on("click", checkOut);
 
 renderProducts();
 renderCategories();
 
 function renderProducts(category) {
-  products(
-    {
-      category
-    },
-    products => {
-      render(Product(products), document.getElementById("products"));
-    }
-  );
+  products(category, products => {
+    $(".product").remove();
+    render(Product(products), document.getElementById("products"));
+  });
 }
 
 function renderCategories() {
@@ -29,7 +28,11 @@ function renderCategories() {
 }
 
 function renderCart() {
-  var container_content = document.getElementById("cartcontainer").innerHTML;
+  var container = document.getElementById("cartcontainer");
+  var container_content = container.innerHTML;
+
+  container.hidden = false;
+
   if (container_content !== "") {
     let cartlist = $("cart-element > ul");
     let cartelement = $("cart-element");
@@ -47,33 +50,15 @@ function renderCart() {
   }
 }
 
+function checkOut() {
+  var cart = JSON.parse(sessionStorage.getItem("cart"));
+}
+
+window.renderProducts = renderProducts;
 // Check for service worker
 if ("serviceWorker" in navigator) {
   // Use the window load event to keep the page load performant
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js");
   });
-}
-
-// Generate random ID
-export async function uuid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return (
-    s4() +
-    s4() +
-    "-" +
-    s4() +
-    "-" +
-    s4() +
-    "-" +
-    s4() +
-    "-" +
-    s4() +
-    s4() +
-    s4()
-  );
 }

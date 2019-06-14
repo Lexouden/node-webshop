@@ -19,7 +19,7 @@ exports.seedProducts = async () => {
     if (!data) return;
 
     data.forEach(category => {
-      categories.push(category.category_name);
+      categories.push(category._id);
     });
 
     ProductController.getProducts({}, data => {
@@ -52,7 +52,14 @@ exports.seedProducts = async () => {
 };
 
 exports.seedCategories = () => {
-  var categories = ["Category 1", "Category 2", "Category 3", "Category 4", "Category 5", "Catgory 6"];
+  var categories = [
+    "Category 1",
+    "Category 2",
+    "Category 3",
+    "Category 4",
+    "Category 5",
+    "Catgory 6"
+  ];
 
   CategoryController.getCategories((data, callback) => {
     if (!callback) return console.log(data);
@@ -68,6 +75,4 @@ exports.seedCategories = () => {
   });
 };
 
-exports.seedUsers = () => {
-
-};
+exports.seedUsers = () => {};

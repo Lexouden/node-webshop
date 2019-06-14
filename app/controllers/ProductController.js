@@ -5,7 +5,7 @@ exports.getProducts = (data, callback) => {
   if (!isEmpty(data)) {
     Product.find(
       {
-        _id: data
+        category: data
       },
       (err, products) => {
         if (err)

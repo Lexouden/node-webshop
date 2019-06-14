@@ -159,10 +159,3 @@ function updateCartCount() {
     span.addClass("update");
   }
 }
-
-function gotoCategory(btn) {
-  let category = btn.dataset.category;
-  socket.emit("products", {
-    category: category
-  });
-}

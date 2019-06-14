@@ -10,10 +10,8 @@ export async function login({ username, password }, callback) {
   });
 }
 
-export async function products({ category }, callback) {
-  socket.emit("products", {
-    category: category
-  });
+export async function products(category, callback) {
+  socket.emit("products", category);
 
   socket.on("productscb", products => {
     return callback(products);
@@ -25,5 +23,13 @@ export async function categories(callback) {
 
   socket.on("categoriescb", categories => {
     return callback(categories);
+  });
+}
+
+export async function checkout(data, callback) {
+  socket.emit("checkout", data);
+
+  socket.on("checkoutcb", () => {
+    return callback(true);
   });
 }
