@@ -3,6 +3,7 @@ import { html } from "lit-html";
 var itemTemplates = [];
 
 export const Product = data => html`
+  <h2 class="center">${data.length} Products Shown</h2>
   ${loadList(data)}
 `;
 
@@ -11,7 +12,10 @@ function loadList(items) {
     itemTemplates.push(html`
       <div class="product">
         <h2 class="header">${item.name}</h2>
-        <p class="description">${item.description}</p>
+        <p class="description">
+          ${item.description} <br /><br />
+          Stock: ${item.stock}
+        </p>
         <p class="price">€${item.price}</p>
         <div
           class="btn"

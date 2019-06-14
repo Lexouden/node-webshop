@@ -44,4 +44,10 @@ io.on("connection", socket => {
       }
     });
   });
+
+  /**
+   * Handle Checkout Socket call
+   */
+
+  socket.on("checkout", data => {});
 });
