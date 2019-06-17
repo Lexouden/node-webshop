@@ -51,17 +51,17 @@ exports.seedProducts = async () => {
   }
 };
 
-exports.seedCategories = () => {
+exports.seedCategories = async () => {
   var categories = [
-    "Category 1",
-    "Category 2",
-    "Category 3",
-    "Category 4",
-    "Category 5",
-    "Catgory 6"
+    "Category-A",
+    "Category-B",
+    "Category-C",
+    "Category-D",
+    "Category-E",
+    "Category-F"
   ];
 
-  CategoryController.getCategories((data, callback) => {
+  await CategoryController.getCategories((data, callback) => {
     if (!callback) return console.log(data);
     if (data === undefined || data.length == 0) {
       console.log("Seeding database");

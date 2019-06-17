@@ -10,7 +10,6 @@ export const Category = data => html`
 `;
 
 function loadList(items) {
-  items.sort();
   for (const item of items) {
     itemTemplates.push(html`
       <button

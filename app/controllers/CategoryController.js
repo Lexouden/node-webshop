@@ -1,7 +1,8 @@
 const Category = require("../models/Category");
 
-exports.getCategories = async (callback) => { // Get all Categories
-  Category.find({}, (err, categories) => {
+exports.getCategories = async callback => {
+  // Get all Categories
+  Category.find({}, null, { sort: { category_name: 1 } }, (err, categories) => {
     if (err) {
       // Error handle
       console.error(
@@ -15,7 +16,8 @@ exports.getCategories = async (callback) => { // Get all Categories
   });
 };
 
-exports.newCategory = (data, callback) => { // Create a new Category
+exports.newCategory = (data, callback) => {
+  // Create a new Category
   if (!data) {
     // Check if required data is present
     return callback("Missing data.", false);
@@ -36,14 +38,19 @@ exports.newCategory = (data, callback) => { // Create a new Category
   });
 };
 
-exports.editCategory = (id, update, callback) => { // Update an existing Category
+exports.editCategory = (id, update, callback) => {
+  // Update an existing Category
   Category.findByIdAndUpdate(id, update, err => {
-    if (err) return console.error(`An error occurred while trying to update a Category: \n${err}`);
+    if (err)
+      return console.error(
+        `An error occurred while trying to update a Category: \n${err}`
+      );
     return callback(true);
   });
 };
 
-exports.deleteCategory = (data, callback) => { // Delete a category from the database
+exports.deleteCategory = (data, callback) => {
+  // Delete a category from the database
   Category.findByIdAndDelete(data, err => {
     if (err) {
       console.error("An error occurred while deleting a Category:", `\n${err}`);
