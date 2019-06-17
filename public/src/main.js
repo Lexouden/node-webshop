@@ -52,6 +52,9 @@ function renderCart() {
 
 function checkOut() {
   var cart = JSON.parse(sessionStorage.getItem("cart"));
+  $("cart-element").remove();
+  console.log("dsas");
+  render(Checkout(cart), document.getElementById("cart-modal"));
 }
 
 window.renderProducts = renderProducts;
