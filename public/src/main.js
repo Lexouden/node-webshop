@@ -3,8 +3,8 @@ import { Cart } from "./components/cart.js";
 import { Product } from "./components/product.js";
 import { Category } from "./components/category.js";
 import { Checkout } from "./components/checkout.js";
-import "./modules/socket.js";
 import { products, categories, checkout } from "./modules/socket.js";
+import "./modules/socket.js";
 
 var cart = $(".cart");
 var checkoutbtn = $("#checkoutbtn");
@@ -34,6 +34,9 @@ function renderCart() {
   container.hidden = false;
 
   if (container_content !== "") {
+    if ($(".input-group")) {
+      $(".input-group").hide();
+    }
     let cartlist = $("cart-element > ul");
     let cartelement = $("cart-element");
     if (cartlist) {
@@ -51,16 +54,76 @@ function renderCart() {
 }
 
 function checkOut() {
-  var cart = JSON.parse(sessionStorage.getItem("cart"));
+  $(".input-group").show();
   $("cart-element").remove();
-  console.log("dsas");
+
   render(Checkout(cart), document.getElementById("cart-modal"));
 }
 
+function confirmOrder() {
+  var shopcart = JSON.parse(sessionStorage.getItem("cart"));
+  var login = JSON.parse(getCookie("login"));
+  var login_id = login._id;
+
+  var firstname = $("#firstname").val(),
+    lastname = $("#lastname").val(),
+    city = $("#city").val(),
+    postal_code = $("#postal-code").val(),
+    address = $("#address").val(),
+    country = $("#country").val();
+
+  if (login) {
+    if (
+      firstname !== "" &&
+      lastname !== "" &&
+      city !== "" &&
+      postal_code !== "" &&
+      address !== "" &&
+      country !== ""
+    ) {
+      checkout(shopcart.cart, login_id, (orders, callback) => {
+        if (callback) {
+          sessionStorage.removeItem("cart");
+          setTimeout(() => {
+            updateCartCount();
+          }, 100);
+          $("#shopcart").modal("toggle");
+        }
+      });
+    } else {
+      return alert("All checkout fields are required!");
+    }
+  } else {
+    document.getElementsByTagName("account-options")[0].toggle();
+    $("#shopcart").modal("toggle");
+    setTimeout(() => {
+      alert("Please log in before proceeding to payment.");
+    }, 1);
+  }
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+}
+
 window.renderProducts = renderProducts;
+window.checkOut = checkOut;
+window.confirmOrder = confirmOrder;
+
 // Check for service worker
 if ("serviceWorker" in navigator) {
-  // Use the window load event to keep the page load performant
+  // Use the window load event to keep the page load fast
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js");
   });

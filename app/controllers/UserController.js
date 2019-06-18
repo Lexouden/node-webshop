@@ -1,10 +1,8 @@
 const User = require("../models/User");
 
-exports.login = ({
-  user,
-  pass
-}, callback) => {
-  User.findOne({
+exports.login = ({ user, pass }, callback) => {
+  User.findOne(
+    {
       username: user
     },
     (err, user) => {
@@ -26,11 +24,15 @@ exports.login = ({
         if (callback === true)
           return console.log(`User '${user.username}' logged in successfully`);
       });
-      delete user.password;
-      delete user.permissions;
-      delete user.orders;
 
-      callback(user, true);
+      User.findById(user._id, "-password -permissions", (err, user) => {
+        if (err)
+          return console.error(
+            "An error occurred while getting user:",
+            `\n${err}`
+          );
+        if (user) callback(user, true);
+      });
     }
   );
 };
@@ -55,8 +57,28 @@ exports.newUser = (data, callback) => {
 
 exports.editUser = (id, update, callback) => {
   User.findByIdAndUpdate(id, update, err => {
-    if (err) return console.error(`An error occurred while updating a User: \n${err}`);
+    if (err)
+      return console.error(`An error occurred while updating a User: \n${err}`);
     return callback(true);
+  });
+};
+
+exports.updateUser = (update, id, callback) => {
+  User.findById(id, "orders", orders => {
+    if (orders === null) {
+      orders = [];
+      orders.push(update);
+    } else {
+      orders.push(update);
+    }
+
+    User.findByIdAndUpdate(id, { orders: orders }, err => {
+      if (err)
+        return console.error(
+          `An error occurred while adding order to User: \n${err}`
+        );
+      callback(orders, true);
+    });
   });
 };
 
@@ -66,12 +88,13 @@ exports.deleteUser = (data, callback) => {
       return console.error(
         `An error occurred while trying to delete a User: \n${err}`
       );
-    return callback(true)
+    return callback(true);
   });
 };
 
 exports.registerSA = data => {
-  User.findOne({
+  User.findOne(
+    {
       username: data.username
     },
     (err, user) => {

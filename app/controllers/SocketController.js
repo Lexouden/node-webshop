@@ -49,5 +49,9 @@ io.on("connection", socket => {
    * Handle Checkout Socket call
    */
 
-  socket.on("checkout", data => {});
+  socket.on("checkout", (data, id) => {
+    UserController.updateUser(data, id, (orders, callback) => {
+      if (callback) socket.emit("checkoutcb", orders);
+    });
+  });
 });

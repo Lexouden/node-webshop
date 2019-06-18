@@ -23,6 +23,9 @@
   <!-- Import module scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+  <script src="./node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
+  <script type="module" src="/src/main.js"></script>
+  <script type="module" src="/src/components/account-options.js"></script>
 </head>
 
 <body>
@@ -32,21 +35,19 @@
       <p class="names"></p>
       <p class="miniprice"></p>
     </div>
-    <ul class="navbar-nav">
-      <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
-    </ul>
     <ul class="navbar-nav navbar-right">
       <li class="nav-item">
       </li>
     </ul>
-
     <div class="cart fa fa-shopping-cart">
       <span class="number">1</span>
+    </div>
+    <div class="float-right mr-5">
+      <account-options></account-options>
     </div>
 
   </nav>
   <div class="container" id="categories">
-    <login-element></login-element>
   </div>
   <div class="container" id="products"></div>
   <div class="quickviewContainer">
@@ -59,7 +60,6 @@
   </div>
   </div>
   <div class="container" id="cartcontainer" hidden></div>
-  <div class="container" id="login-container"></div>
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -71,9 +71,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-  <script type="module" src="/src/main.js"></script>
   <script type="text/javascript" src="/src/modules/shop.js"></script>
-  <script type="module" src="/src/components/login.js"></script>
 </body>
 
 </html>

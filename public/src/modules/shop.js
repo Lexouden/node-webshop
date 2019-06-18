@@ -16,6 +16,41 @@ close.on("click", function() {
 
 updateCartCount();
 
+(() => {
+  var hasStorage = "sessionStorage" in window && window.sessionStorage,
+    storageKey = "cart",
+    now,
+    expiration,
+    data = false;
+
+  try {
+    if (hasStorage) {
+      data = sessionStorage.getItem(storageKey);
+      if (data) {
+        // extract saved object from JSON encoded string
+        data = JSON.parse(data);
+
+        // calculate expiration time for content,
+        // to force periodic refresh after 30 minutes
+        now = new Date();
+        expiration = new Date(data.timestamp);
+        expiration.setMinutes(expiration.getMinutes() + 60);
+
+        // ditch the content if too old
+        if (now.getTime() > expiration.getTime()) {
+          data = false;
+          sessionStorage.removeItem(storageKey);
+          setTimeout(() => {
+            updateCartCount();
+          }, 10);
+        }
+      }
+    }
+  } catch (e) {
+    data = false;
+  }
+})();
+
 function quickView(btn) {
   var description = btn.dataset.description,
     header = btn.dataset.title,
@@ -42,21 +77,24 @@ function addToCart(btn) {
     cart = JSON.parse(sessionStorage.getItem("cart"));
 
   if (cart) {
-    var checkcart = cart.find(cart => cart.name === productName);
+    var checkcart = cart.cart.find(cart => cart.name === productName);
 
     if (checkcart) {
       checkcart.amount++;
     } else {
-      cart.push({
+      cart.cart.push({
         name: productName,
         amount: 1,
         price: price
       });
     }
   } else {
-    cart = [];
+    cart = {
+      timestamp: Date.now(),
+      cart: []
+    };
 
-    cart.push({
+    cart.cart.push({
       name: productName,
       amount: 1,
       price: price
@@ -73,27 +111,19 @@ function removeFromCart(btn, type) {
     cart = JSON.parse(sessionStorage.getItem("cart"));
 
   if (cart) {
-    var checkcart = cart.find(cart => cart.name === productName);
-    var cartindex = cart.findIndex(cart => cart.name === productName);
+    var checkcart = cart.cart.find(cart => cart.name === productName);
+    var cartindex = cart.cart.findIndex(cart => cart.name === productName);
     if (checkcart) {
       if (type === "remove") {
-        cart.splice(cartindex, 1);
+        cart.cart.splice(cartindex, 1);
       } else {
         if (checkcart.amount <= 1) {
-          cart.splice(cartindex, 1);
+          cart.cart.splice(cartindex, 1);
         } else {
           checkcart.amount--;
         }
       }
     }
-  } else {
-    cart = [];
-
-    cart.push({
-      name: productName,
-      amount: 1,
-      price: price
-    });
   }
 
   sessionStorage.setItem("cart", JSON.stringify(cart));
@@ -106,7 +136,7 @@ function updateCart(input) {
     cart = JSON.parse(sessionStorage.getItem("cart"));
 
   if (cart) {
-    var checkcart = cart.find(cart => cart.name === productName);
+    var checkcart = cart.cart.find(cart => cart.name === productName);
     if (checkcart) {
       if (input.value < 1) {
         checkcart.amount = 1;
@@ -115,7 +145,10 @@ function updateCart(input) {
       }
     }
   } else {
-    cart = [];
+    cart = {
+      timestamp: Date.now(),
+      cart: []
+    };
 
     cart.push({
       name: productName,
@@ -135,7 +168,7 @@ function updateCartCount() {
   let cartelement = $("cart-element");
   if (cart) {
     cartCount = 0;
-    cart.forEach(item => {
+    cart.cart.forEach(item => {
       cartCount = cartCount + Number(item.amount);
     });
   }

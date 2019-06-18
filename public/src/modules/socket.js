@@ -26,10 +26,10 @@ export async function categories(callback) {
   });
 }
 
-export async function checkout(data, callback) {
-  socket.emit("checkout", data);
+export async function checkout(data, id, callback) {
+  socket.emit("checkout", data, id);
 
-  socket.on("checkoutcb", () => {
-    return callback(true);
+  socket.on("checkoutcb", orders => {
+    return callback(orders, true);
   });
 }

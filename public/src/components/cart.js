@@ -52,7 +52,12 @@ export class CartElement extends LitElement {
           <span class="float-right"
             >With VAT: €${Number(totalWithTax()).toFixed(2)}</span
           ><br />
-          <button class="float-right" id="checkoutbtn">
+          <button
+            class="float-right"
+            id="checkoutbtn"
+            onclick="checkOut()"
+            disabled
+          >
             Proceed to Checkout
           </button>
         </li>
@@ -94,8 +99,8 @@ export const Cart = () => html`
 function loadList() {
   cart = JSON.parse(sessionStorage.getItem("cart"));
   itemTemplates = [];
-  if (cart && cart.length !== 0) {
-    for (let item of cart) {
+  if (cart && cart.cart.length !== 0) {
+    for (let item of cart.cart) {
       itemTemplates.push(
         html`
           <li class="list-group-item">
@@ -156,7 +161,7 @@ function totalWithTax() {
   let total = 0;
 
   if (cart) {
-    for (let i of cart) {
+    for (let i of cart.cart) {
       if (i !== null) total += i.price * i.amount;
     }
   }
@@ -168,7 +173,7 @@ function totalWithoutTax() {
   let total = 0;
 
   if (cart) {
-    for (let i of cart) {
+    for (let i of cart.cart) {
       let price = i.price * i.amount - (i.price / 100) * 21;
       if (i !== null) total += price;
     }
@@ -181,7 +186,7 @@ function totalItems() {
   let total = 0;
 
   if (cart) {
-    for (let item of cart) {
+    for (let item of cart.cart) {
       if (item !== 0) total += item.amount;
     }
   }
