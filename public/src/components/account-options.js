@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { login } from "../modules/socket.js";
+import { renderOrders } from "../modules/render.js";
 
 // import sharedStyles from './shared-styles';
 
@@ -158,7 +159,7 @@ class AccountOptions extends LitElement {
             <iron-icon icon="account-circle" slot="item-icon"></iron-icon>
             My account
           </paper-icon-item>
-          <paper-icon-item>
+          <paper-icon-item @click="${this._requestOrders}">
             <iron-icon icon="history" slot="item-icon"></iron-icon>
             Order history
           </paper-icon-item>
@@ -194,7 +195,7 @@ class AccountOptions extends LitElement {
           console.error("User does not exist.", "Login failed!");
         }
         if (callback === true) {
-          console.info("Logged in successfully", this);
+          console.info("Logged in successfully");
           setCookie("login", JSON.stringify(user), 5);
           this._loggedIn = true;
         }
@@ -232,6 +233,10 @@ class AccountOptions extends LitElement {
     } else {
       this.shadowRoot.getElementById("login-dropdown").toggle();
     }
+  }
+
+  _requestOrders() {
+    renderOrders();
   }
   // stateChanged(state) {
   //   this._accountOptionsOpened = state.app.accountOptionsOpened;

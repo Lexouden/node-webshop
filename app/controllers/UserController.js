@@ -55,6 +55,17 @@ exports.newUser = (data, callback) => {
   });
 };
 
+exports.getOrders = (data, callback) => {
+  User.findById(data, "orders", orders => {
+    console.log(orders);
+    if (orders !== null) {
+      return callback(orders, true);
+    } else {
+      return callback(null, false);
+    }
+  });
+};
+
 exports.editUser = (id, update, callback) => {
   User.findByIdAndUpdate(id, update, err => {
     if (err)

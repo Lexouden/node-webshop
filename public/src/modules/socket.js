@@ -1,4 +1,5 @@
 var socket = io("http://localhost:3000");
+
 export async function login({ username, password }, callback) {
   socket.emit("login", {
     user: username,
@@ -30,6 +31,14 @@ export async function checkout(data, id, callback) {
   socket.emit("checkout", data, id);
 
   socket.on("checkoutcb", orders => {
+    return callback(orders, true);
+  });
+}
+
+export async function orders(id, callback) {
+  socket.emit("orders", id);
+
+  socket.on("orderscb", orders => {
     return callback(orders, true);
   });
 }

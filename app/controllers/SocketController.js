@@ -48,10 +48,22 @@ io.on("connection", socket => {
   /**
    * Handle Checkout Socket call
    */
-
   socket.on("checkout", (data, id) => {
     UserController.updateUser(data, id, (orders, callback) => {
       if (callback) socket.emit("checkoutcb", orders);
+    });
+  });
+
+  /**
+   * Handle Order request Socket call
+   */
+  socket.on("orders", id => {
+    UserController.getOrders(id, (orders, callback) => {
+      if (orders !== null) {
+        socket.emit("orderscb", orders);
+      } else {
+        socket.emit("orderscb", false);
+      }
     });
   });
 });

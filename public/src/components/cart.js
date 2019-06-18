@@ -52,12 +52,7 @@ export class CartElement extends LitElement {
           <span class="float-right"
             >With VAT: €${Number(totalWithTax()).toFixed(2)}</span
           ><br />
-          <button
-            class="float-right"
-            id="checkoutbtn"
-            onclick="checkOut()"
-            disabled
-          >
+          <button class="float-right" id="checkoutbtn" onclick="checkOut()">
             Proceed to Checkout
           </button>
         </li>
