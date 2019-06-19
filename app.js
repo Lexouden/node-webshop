@@ -1,83 +1,84 @@
 console.clear();
 
 // Require NPM modules
-var createError = require('http-errors');
-var express = require('express');
-var http = require('http');
-var cookieParser = require('cookie-parser');
-var path = require('path');
-var logger = require('morgan');
+var createError = require("http-errors");
+var express = require("express");
+var http = require("http");
+var cookieParser = require("cookie-parser");
+var path = require("path");
+var logger = require("morgan");
 
 // Some globally accessible vars
-global.config = require('./config/config');
-module.exports.db = mongoose = require('mongoose');
-
-// Require auth controller
-require('./app/auth');
+global.config = require("./config/config");
+module.exports.db = mongoose = require("mongoose");
 
 var app = express();
 
-app.set('views', path.join(__dirname, 'views'));
+app.set("views", path.join(__dirname, "views"));
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: false
-}));
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Make the app use the html files from public
-app.use('/', express.static('./public', {
-  extensions: ['html']
-}));
+app.use(
+  "/",
+  express.static("./public", {
+    extensions: ["html"]
+  })
+);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   next(createError(404));
 });
 
 /**
  * Create database connection
  */
-require('./app/database');
+require("./app/database");
 
 /**
  * Create server
  */
 var port = normalizePort(process.env.PORT || config.server.port);
-app.set('port', port);
+app.set("port", port);
 
 var server = http.createServer(app);
 
 /**
  * Make websocket connection
  */
-module.exports.io = io = require('socket.io')(server);
+module.exports.io = io = require("socket.io")(server);
 
-io.on('connection', (socket) => {
-  console.log('A user connected')
-  socket.on('disconnect', () => {
-    console.log('A user disconnected')
+io.on("connection", socket => {
+  console.log("A user connected");
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
   });
 });
 
 /**
  * Require all controllers
  */
-require('./app/controllers/UserController');
-require('./app/controllers/CategoryController');
-require('./app/controllers/ProductController');
-require('./app/controllers/SocketController');
+require("./app/controllers/UserController");
+require("./app/controllers/CategoryController");
+require("./app/controllers/ProductController");
+require("./app/controllers/SocketController");
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
+server.on("error", onError);
+server.on("listening", onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -104,22 +105,20 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
+  if (error.syscall !== "listen") {
     throw error;
   }
 
-  var bind = typeof port === 'string' ?
-    'Pipe ' + port :
-    'Port ' + port;
+  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
       process.exit(1);
       break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
       process.exit(1);
       break;
     default:
@@ -132,5 +131,5 @@ function onError(error) {
  */
 
 function onListening() {
-  console.log(`Listening on ${port}`)
+  console.log(`Listening on ${port}`);
 }

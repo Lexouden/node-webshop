@@ -22,9 +22,7 @@ function loadList(items) {
           onclick="addToCart(this)"
           data-price="${item.price}"
           data-title="${item.name}"
-        >
-          Add to cart
-        </div>
+        >Add to cart</div>
         <div
           class="quickview"
           onclick="quickView(this)"
