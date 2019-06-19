@@ -19,6 +19,7 @@
     "lit-element": "^2.1.0",
     "lit-html": "^1.0.0",
     "toastr": "^2.1.4",
+    "uuid": "^3.3.2",
     "web-animations-js": "^2.3.1"
   }
 }

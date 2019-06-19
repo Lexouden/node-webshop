@@ -81,7 +81,16 @@ function confirmOrder() {
       address !== "" &&
       country !== ""
     ) {
-      checkout(shopcart.cart, login_id, (orders, callback) => {
+      var order = {
+        _id: guid(),
+        fullname: `${firstname} ${lastname}`,
+        city: city,
+        zip: postal_code,
+        address: address,
+        country: country,
+        items: shopcart.cart
+      };
+      checkout(order, login_id, (orders, callback) => {
         if (callback) {
           sessionStorage.removeItem("cart");
           setTimeout(() => {
@@ -127,4 +136,26 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js");
   });
+}
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return (
+    s4() +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    "-" +
+    s4() +
+    s4() +
+    s4()
+  );
 }

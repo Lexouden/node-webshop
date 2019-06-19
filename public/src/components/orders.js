@@ -4,8 +4,6 @@ import { LitElement, html, css } from "lit-element";
 import "@polymer/paper-item/paper-icon-item";
 import "@polymer/paper-item";
 
-var templates = [];
-
 export const Orders = data => html`
   <div
     class="modal fade"
@@ -30,14 +28,15 @@ export const Orders = data => html`
         </div>
         <div class="modal-body" id="order-modal"></div>
         <div id="order-content" role="listbox">
-          ${loadList(data)}
+          ${loadOrders(data)}
         </div>
       </div>
     </div>
   </div>
 `;
 
-function loadList(data) {
+function loadOrders(data) {
+  let templates = [];
   // load Orders
   if (data === false) {
     templates.push(html`
@@ -46,16 +45,53 @@ function loadList(data) {
       </h4>
     `);
   } else {
-    console.log(data);
-    data.forEach(order => {
-      // templates.push(html`
-      //   <paper-icon-item>
-      //   </paper-icon-item>
-      // `);
-    });
+    for (const order of data) {
+      templates.push(html`
+        <paper-icon-item class="mb-3">
+          Order nr. ${order._id}<br />
+          ${loadList(order)}
+        </paper-icon-item>
+        Total: €${totalWithTax(order)}
+        <hr />
+      `);
+    }
   }
 
   return html`
     ${templates}
   `;
+}
+
+function loadList(data) {
+  let templates = [];
+  // load Orders
+  if (data === false) {
+    templates.push(html`
+      <h4>
+        No orders found.
+      </h4>
+    `);
+  } else {
+    for (const item of data.items) {
+      templates.push(html`
+        ${item.name} ${item.amount}
+        €${Number(item.price).toFixed(2) * item.amount}<br />
+      `);
+    }
+  }
+
+  return html`
+    ${templates}
+  `;
+}
+
+function totalWithTax(data) {
+  let total = 0;
+  if (data) {
+    for (let i of data.items) {
+      if (i !== null) total += i.price * i.amount;
+    }
+  }
+
+  return total;
 }

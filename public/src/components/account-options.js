@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit-element";
 import { login } from "../modules/socket.js";
-import { renderOrders } from "../modules/render.js";
+import { renderOrders, renderRegister } from "../modules/render.js";
 
 // import sharedStyles from './shared-styles';
 
@@ -139,8 +139,12 @@ class AccountOptions extends LitElement {
             >Login</paper-button
           >
           <footer>
-            <a class="underline" page-id="register">Create account</a>
-            <a class="underline" page-id="account-recovery">Forgot password?</a>
+            <a class="underline" page-id="register" @click="${this._register}"
+              >Create account</a
+            >
+            <a class="underline" page-id="account-recovery" disabled
+              >Forgot password?</a
+            >
           </footer>
         </div>
       </paper-menu-button>
@@ -237,6 +241,10 @@ class AccountOptions extends LitElement {
 
   _requestOrders() {
     renderOrders();
+  }
+
+  _register() {
+    renderRegister();
   }
   // stateChanged(state) {
   //   this._accountOptionsOpened = state.app.accountOptionsOpened;

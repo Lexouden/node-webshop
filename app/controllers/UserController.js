@@ -41,6 +41,7 @@ exports.newUser = (data, callback) => {
   var newUser = new User({
     firstName: data.firstName,
     lastName: data.lastName,
+    email: data.email,
     username: data.username,
     password: data.password
   });
@@ -55,11 +56,15 @@ exports.newUser = (data, callback) => {
   });
 };
 
-exports.getOrders = (data, callback) => {
-  User.findById(data, "orders", orders => {
-    console.log(orders);
-    if (orders !== null) {
-      return callback(orders, true);
+exports.getOrders = (id, callback) => {
+  User.findById(id, "orders", (err, data) => {
+    if (err)
+      return console.error(
+        `An error occurred while requesting User data: \n${err}`
+      );
+
+    if (data.orders !== null) {
+      return callback(data.orders, true);
     } else {
       return callback(null, false);
     }
@@ -75,20 +80,22 @@ exports.editUser = (id, update, callback) => {
 };
 
 exports.updateUser = (update, id, callback) => {
-  User.findById(id, "orders", orders => {
-    if (orders === null) {
-      orders = [];
-      orders.push(update);
+  User.findById(id, (err, user) => {
+    if (err)
+      return console.error(`An error occurred while requesting User: \n${err}`);
+    if (user.orders === null) {
+      user.orders = [];
+      user.orders.push(update);
     } else {
-      orders.push(update);
+      user.orders.push(update);
     }
 
-    User.findByIdAndUpdate(id, { orders: orders }, err => {
+    User.findByIdAndUpdate(id, { orders: user.orders }, err => {
       if (err)
         return console.error(
           `An error occurred while adding order to User: \n${err}`
         );
-      callback(orders, true);
+      callback(update, true);
     });
   });
 };
@@ -114,7 +121,7 @@ exports.registerSA = data => {
         var newSA = new User({
           firstName: data.firstName,
           lastName: data.lastName,
-          email: `${dat.firstname}.${data.lastname}@gmail.com`,
+          email: `${data.firstname}.${data.lastname}@gmail.com`,
           username: data.username,
           password: data.password,
           permissions: {
