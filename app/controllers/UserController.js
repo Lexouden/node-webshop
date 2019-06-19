@@ -39,8 +39,8 @@ exports.login = ({ user, pass }, callback) => {
 
 exports.newUser = (data, callback) => {
   var newUser = new User({
-    firstName: data.firstName,
-    lastName: data.lastName,
+    firstName: data.firstname,
+    lastName: data.lastname,
     email: data.email,
     username: data.username,
     password: data.password

@@ -1,5 +1,6 @@
-import { Orders } from "../components/orders.js";
 import { render } from "lit-html";
+import { Orders } from "../components/orders.js";
+import { RegisterForm } from "../components/register.js";
 import { orders } from "../modules/socket.js";
 
 import "../components/orders.js";
@@ -13,6 +14,13 @@ export function renderOrders() {
     order_container.hidden = false;
     $("#orders").modal("toggle");
   });
+}
+
+export function renderRegister() {
+  let register_container = document.getElementById("registercontainer");
+  render(RegisterForm(), register_container);
+  register_container.hidden = false;
+  $("#register").modal("toggle");
 }
 
 function getCookie(cname) {

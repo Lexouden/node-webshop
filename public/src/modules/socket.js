@@ -42,3 +42,25 @@ export async function orders(id, callback) {
     return callback(orders, true);
   });
 }
+
+export async function register(data, callback) {
+  var firstname = data.find(element => element.name === "Firstname").value,
+    lastname = data.find(element => element.name === "Lastname").value,
+    username = data.find(element => element.name === "username").value,
+    password = data.find(element => element.name === "password").value,
+    email = data.find(element => element.name === "email").value;
+
+  var user = {
+    firstname: firstname,
+    lastname: lastname,
+    email: email,
+    username: username,
+    password: password
+  };
+
+  socket.emit("register", user);
+
+  socket.on("registercb", cb => {
+    callback(cb);
+  });
+}

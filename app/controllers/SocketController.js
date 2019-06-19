@@ -66,4 +66,15 @@ io.on("connection", socket => {
       }
     });
   });
+
+  /**
+   * Handle register Socket call
+   */
+  socket.on("register", user => {
+    UserController.newUser(user, callback => {
+      if (callback) {
+        socket.emit("registercb", callback);
+      }
+    });
+  });
 });

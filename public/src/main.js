@@ -3,7 +3,7 @@ import { Cart } from "./components/cart.js";
 import { Product } from "./components/product.js";
 import { Category } from "./components/category.js";
 import { Checkout } from "./components/checkout.js";
-import { products, categories, checkout } from "./modules/socket.js";
+import { products, categories, checkout, register } from "./modules/socket.js";
 import "./modules/socket.js";
 
 var cart = $(".cart");
@@ -126,9 +126,35 @@ function confirmOrder() {
   }
 }
 
+function registerUser() {
+  var form = $("#registerform").serializeArray();
+  var email = form.find(element => element.name === "email");
+
+  if (ValidateEmail(email)) {
+    register(form, callback => {
+      if (callback) {
+        $("#register").modal("toggle");
+        $("#register").remove();
+      }
+    });
+  }
+
+  function ValidateEmail(inputText) {
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (inputText.value.match(mailformat)) {
+      return true;
+    } else {
+      alert("You have entered an invalid email address!");
+      document.register.email.focus();
+      return false;
+    }
+  }
+}
+
 window.renderProducts = renderProducts;
 window.checkOut = checkOut;
 window.confirmOrder = confirmOrder;
+window.registerUser = registerUser;
 
 // Check for service worker
 if ("serviceWorker" in navigator) {
